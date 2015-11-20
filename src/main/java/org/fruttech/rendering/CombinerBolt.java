@@ -23,12 +23,14 @@ public class CombinerBolt extends ContextBolt{
             results.put(key,new LinkedList<>());
         }
         final List<RenderingJobPartResult> resultsForKey = results.get(key);
-        logger.debug(String.format("Got job part result for key: %s. Have %d of %d buckets", key, resultsForKey.size(), renderingJobPart.getTotalBuckets()));
         resultsForKey.add(renderingJobPart);
+
+        logger.info(String.format("Got job part result for key: %s. Have %d of %d buckets", key, resultsForKey.size(), renderingJobPart.getTotalBuckets()));
         getCollector().ack(input);
 
-        if(renderingJobPart.getTotalBuckets() == resultsForKey.size()-1){
-            logger.info("All buckets gathered. Start assemble");
+        if(renderingJobPart.getTotalBuckets() == resultsForKey.size()){
+            logger.info("All buckets gathered. Start assemble. Key "+key);
+            results.remove(key);
         }
     }
 

@@ -12,6 +12,7 @@ import java.util.Map;
 
 public class RenderingTopologySpout extends BaseRichSpout {
     private SpoutOutputCollector collector;
+    boolean fired = false;
 
     @Override public void declareOutputFields(OutputFieldsDeclarer declarer) {
         declarer.declare(new Fields("job"));
@@ -22,7 +23,15 @@ public class RenderingTopologySpout extends BaseRichSpout {
     }
 
     @Override public void nextTuple() {
-        final RenderingJob renderingJob = new RenderingJob("scene-1",10,13);
-        collector.emit(new Values(RenderingJob.toJson(renderingJob)));
+        if(!fired) {
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            final RenderingJob renderingJob = new RenderingJob("scene-1", 10, 15);
+            collector.emit(new Values(RenderingJob.toJson(renderingJob)));
+            fired = true;
+        }
     }
 }

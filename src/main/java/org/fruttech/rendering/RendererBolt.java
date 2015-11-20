@@ -16,7 +16,7 @@ public class RendererBolt extends ContextBolt{
         final String key = input.getString(0);
         final RenderingJobPart renderingJobPart = RenderingJobPart.fromJson(input.getString(1));
         try {
-            logger.info("Processing job part: " + renderingJobPart+" key: "+key);
+            //logger.info("Processing job part: " + renderingJobPart+" key: "+key);
             Thread.sleep(300);
 
             byte[] payload = new byte[1024 * 10];

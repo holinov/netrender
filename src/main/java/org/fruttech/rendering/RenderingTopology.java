@@ -33,7 +33,7 @@ public class RenderingTopology {
 
         //Configure combiner bolts
         topologyBuilder.setBolt(RenderingTopologyConstants.COMBINER_NAME, new CombinerBolt(), topologyConfig.combiners)
-                .partialKeyGrouping(RenderingTopologyConstants.RENDERER_NAME,new Fields("key"));
+                .fieldsGrouping(RenderingTopologyConstants.RENDERER_NAME,new Fields("key"));
 
 
         Config conf = new Config();
