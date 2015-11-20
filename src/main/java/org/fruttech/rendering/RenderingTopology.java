@@ -4,7 +4,6 @@ import backtype.storm.Config;
 import backtype.storm.LocalCluster;
 import backtype.storm.topology.TopologyBuilder;
 import backtype.storm.tuple.Fields;
-import backtype.storm.utils.Utils;
 import com.google.inject.Injector;
 
 import java.io.IOException;
@@ -13,6 +12,12 @@ import java.io.IOException;
  * Distributed rendering topology
  */
 public class RenderingTopology {
+
+    static String convertStreamToString(java.io.InputStream is) {
+        java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
+        return s.hasNext() ? s.next() : "";
+    }
+
     public static void main(String[] args) {
 
         final Injector injector = ApplicationContext.getInstance().getInjector();
@@ -35,7 +40,6 @@ public class RenderingTopology {
         topologyBuilder.setBolt(RenderingTopologyConstants.COMBINER_NAME, new CombinerBolt(), topologyConfig.combiners)
                 .fieldsGrouping(RenderingTopologyConstants.RENDERER_NAME,new Fields("key"));
 
-
         Config conf = new Config();
         conf.setDebug(false);
 
@@ -53,5 +57,3 @@ public class RenderingTopology {
         cluster.shutdown();
     }
 }
-
-
