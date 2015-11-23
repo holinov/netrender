@@ -6,11 +6,13 @@ import org.fruttech.rendering.common.RunnableService;
 import org.fruttech.rendering.data.jobs.RenderingJob;
 import org.fruttech.rendering.data.jobs.RenderingJobPart;
 
-import java.util.HashMap;
 import java.util.Properties;
 
 @Singleton
 public class KafkaConsumerService implements RunnableService {
+    private KafkaConsumer<String, RenderingJob> jobConsumer;
+    private KafkaConsumer<String, RenderingJobPart> jobPartConsumer;
+
     public KafkaConsumer<String, RenderingJob> getJobConsumer() {
         return jobConsumer;
     }
@@ -18,9 +20,6 @@ public class KafkaConsumerService implements RunnableService {
     public KafkaConsumer<String, RenderingJobPart> getJobPartConsumer() {
         return jobPartConsumer;
     }
-
-    private KafkaConsumer<String,RenderingJob> jobConsumer;
-    private KafkaConsumer<String, RenderingJobPart> jobPartConsumer;
 
     @Override public void run() {
         jobConsumer = new KafkaConsumer<>(getProperties());

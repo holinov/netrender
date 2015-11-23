@@ -9,12 +9,12 @@ import org.fruttech.rendering.data.RenderState;
 import org.fruttech.rendering.data.SceneInfo;
 
 @Singleton
-public class RenderStateServiceImpl implements RenderStateService{
+public class RenderStateServiceImpl implements RenderStateService {
     @Inject HazelcastService instance;
 
     @Override public void setRenderState(RNode node, RenderState state) {
         final IMap<RNode, RenderState> map = instance.getRenderState();
-        map.put(node,state);
+        map.put(node, state);
     }
 
     @Override public RenderState getRenderState(RNode node) {

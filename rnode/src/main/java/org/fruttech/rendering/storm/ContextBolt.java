@@ -8,6 +8,8 @@ import org.fruttech.rendering.ApplicationContext;
 import java.util.Map;
 
 public abstract class ContextBolt extends BaseRichBolt {
+    private OutputCollector collector;
+
     /**
      * Getter for property 'collector'.
      *
@@ -16,8 +18,6 @@ public abstract class ContextBolt extends BaseRichBolt {
     public OutputCollector getCollector() {
         return collector;
     }
-
-    private OutputCollector collector;
 
     @Override public void prepare(Map stormConf, TopologyContext context, OutputCollector collector) {
         ApplicationContext.getInstance().getInjector().injectMembers(this);

@@ -8,6 +8,10 @@ import java.util.Map;
 
 public abstract class ContextSpout extends BaseRichSpout {
 
+    private Map conf;
+    private TopologyContext context;
+    private SpoutOutputCollector collector;
+
     public Map getConf() {
         return conf;
     }
@@ -19,10 +23,6 @@ public abstract class ContextSpout extends BaseRichSpout {
     public SpoutOutputCollector getCollector() {
         return collector;
     }
-
-    private Map conf;
-    private TopologyContext context;
-    private SpoutOutputCollector collector;
 
     @Override public void open(Map conf, TopologyContext context, SpoutOutputCollector collector) {
         this.conf = conf;

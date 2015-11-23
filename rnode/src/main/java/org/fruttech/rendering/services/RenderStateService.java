@@ -1,11 +1,5 @@
 package org.fruttech.rendering.services;
 
-import com.hazelcast.config.Config;
-import com.hazelcast.core.Hazelcast;
-import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IMap;
-import com.hazelcast.core.ISet;
-import org.fruttech.rendering.common.RunnableService;
 import org.fruttech.rendering.data.RNode;
 import org.fruttech.rendering.data.RenderState;
 import org.fruttech.rendering.data.SceneInfo;

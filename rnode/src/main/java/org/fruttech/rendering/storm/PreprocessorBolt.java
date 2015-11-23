@@ -7,7 +7,7 @@ import backtype.storm.tuple.Values;
 import org.fruttech.rendering.data.jobs.RenderingJob;
 import org.fruttech.rendering.data.jobs.RenderingJobPart;
 
-public class PreprocessorBolt extends ContextBolt{
+public class PreprocessorBolt extends ContextBolt {
 
     public static final int TOTAL_BUCKETS = 2;
 
@@ -24,6 +24,6 @@ public class PreprocessorBolt extends ContextBolt{
     }
 
     @Override public void declareOutputFields(OutputFieldsDeclarer declarer) {
-        declarer.declare(new Fields(RenderingTopologyConstants.KEY_FIELD_NAME,RenderingTopologyConstants.DATA_FIELD_NAME));
+        declarer.declare(new Fields(RenderingTopologyConstants.KEY_FIELD_NAME, RenderingTopologyConstants.DATA_FIELD_NAME));
     }
 }

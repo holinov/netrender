@@ -1,9 +1,6 @@
 package org.fruttech.rendering.storm;
 
-import backtype.storm.spout.SpoutOutputCollector;
-import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.OutputFieldsDeclarer;
-import backtype.storm.topology.base.BaseRichSpout;
 import backtype.storm.tuple.Fields;
 import backtype.storm.tuple.Values;
 import com.google.inject.Inject;
@@ -40,7 +37,7 @@ public class JobSpout extends ContextSpout {
 
     private Map<TopicPartition, Long> process(Map<String, ConsumerRecords<String, RenderingJob>> records) {
         Map<TopicPartition, Long> processedOffsets = new HashMap<>();
-        for(Map.Entry<String, ConsumerRecords<String, RenderingJob>> recordMetadata : records.entrySet()) {
+        for (Map.Entry<String, ConsumerRecords<String, RenderingJob>> recordMetadata : records.entrySet()) {
             List<ConsumerRecord<String, RenderingJob>> recordsPerTopic = recordMetadata.getValue().records();
             for (ConsumerRecord<String, RenderingJob> record : recordsPerTopic) {
                 // process record
@@ -61,6 +58,6 @@ public class JobSpout extends ContextSpout {
     }
 
     private SceneInfo buildSceneInfo(RenderingJob renderingJob) {
-        return new SceneInfo(renderingJob.getScene(),renderingJob);
+        return new SceneInfo(renderingJob.getScene(), renderingJob);
     }
 }

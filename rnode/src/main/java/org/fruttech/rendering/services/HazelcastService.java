@@ -28,6 +28,7 @@ public class HazelcastService implements RunnableService {
     public IMap<RNode, RenderState> getRenderState() {
         return hazelcastInstance.getMap(RENDER_STATE_MAP);
     }
+
     public ISet<SceneInfo> getRenderScenes() {
         return hazelcastInstance.getSet(RENDER_SCENES_SET);
     }

@@ -1,20 +1,17 @@
 package org.fruttech.rendering.services;
 
 import com.google.inject.Singleton;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.fruttech.rendering.common.RunnableService;
 import org.fruttech.rendering.data.jobs.RenderingJob;
 import org.fruttech.rendering.data.jobs.RenderingJobPart;
 
-import java.util.HashMap;
 import java.util.Properties;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Singleton
-public class KafraProducerService implements RunnableService {
+public class KafkaProducerService implements RunnableService {
 
     public static final String RENDER_JOBS_QUEUE_NAME = "RenderJobs";
     private static final String RENDER_JOB_PARTS_QUEUE_NAME = "RenderJobParts";
@@ -42,10 +39,10 @@ public class KafraProducerService implements RunnableService {
         return props;
     }
 
-    public void sendJob(RenderingJob job){
+    public void sendJob(RenderingJob job) {
         final String jobId = UUID.randomUUID().toString();
         job.setId(jobId);
-        jobProducer.send(new ProducerRecord<>(RENDER_JOBS_QUEUE_NAME,jobId, job));
+        jobProducer.send(new ProducerRecord<>(RENDER_JOBS_QUEUE_NAME, jobId, job));
     }
 
     public void sendJobPart(RenderingJobPart jobPart) {

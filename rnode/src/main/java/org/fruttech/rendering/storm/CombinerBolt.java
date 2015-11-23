@@ -11,16 +11,16 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-public class CombinerBolt extends ContextBolt{
+public class CombinerBolt extends ContextBolt {
     private static final Logger logger = LoggerFactory.getLogger(CombinerBolt.class);
-    private final Map<String,List<RenderingJobPartResult>> results = new HashMap<>();
+    private final Map<String, List<RenderingJobPartResult>> results = new HashMap<>();
 
     @Override public void execute(Tuple input) {
         final String key = input.getString(0);
         final RenderingJobPartResult renderingJobPart = RenderingJobPartResult.fromJson(input.getString(1));
 
-        if(!results.containsKey(key)){
-            results.put(key,new LinkedList<>());
+        if (!results.containsKey(key)) {
+            results.put(key, new LinkedList<>());
         }
         final List<RenderingJobPartResult> resultsForKey = results.get(key);
         resultsForKey.add(renderingJobPart);
@@ -28,8 +28,8 @@ public class CombinerBolt extends ContextBolt{
         logger.info(String.format("Got job part result for key: %s. Have %d of %d buckets", key, resultsForKey.size(), renderingJobPart.getTotalBuckets()));
         getCollector().ack(input);
 
-        if(renderingJobPart.getTotalBuckets() == resultsForKey.size()){
-            logger.info("All buckets gathered. Start assemble. Key "+key);
+        if (renderingJobPart.getTotalBuckets() == resultsForKey.size()) {
+            logger.info("All buckets gathered. Start assemble. Key " + key);
             results.remove(key);
         }
     }

@@ -4,7 +4,7 @@ import com.google.inject.Inject;
 
 import javax.inject.Named;
 
-public class RenderingTopologyConfig{
+public class RenderingTopologyConfig {
     @Inject @Named("rendering.topology.spouts")
     public int spouts;
 

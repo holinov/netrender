@@ -11,8 +11,8 @@ import org.fruttech.rendering.data.jobs.RenderingJob;
 import java.util.Map;
 
 public class RenderingTopologySpout extends BaseRichSpout {
-    private SpoutOutputCollector collector;
     boolean fired = false;
+    private SpoutOutputCollector collector;
 
     @Override public void declareOutputFields(OutputFieldsDeclarer declarer) {
         declarer.declare(new Fields("job"));
@@ -23,7 +23,7 @@ public class RenderingTopologySpout extends BaseRichSpout {
     }
 
     @Override public void nextTuple() {
-        if(!fired) {
+        if (!fired) {
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException e) {

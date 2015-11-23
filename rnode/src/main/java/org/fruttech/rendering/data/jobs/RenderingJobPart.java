@@ -1,6 +1,6 @@
 package org.fruttech.rendering.data.jobs;
 
-public class RenderingJobPart extends RenderingJob{
+public class RenderingJobPart extends RenderingJob {
     private String bucketInfo;
     private long frame;
     private int totalBuckets;
@@ -15,7 +15,7 @@ public class RenderingJobPart extends RenderingJob{
         this.totalBuckets = totalBuckets;
     }
 
-    public static String toJson(RenderingJob job){
+    public static String toJson(RenderingJob job) {
         return gson.toJson(job);
     }
 
@@ -87,11 +87,11 @@ public class RenderingJobPart extends RenderingJob{
         return sb.toString();
     }
 
-    public void setJobPartId(String jobPartId) {
-        this.jobPartId = jobPartId;
-    }
-
     public String getJobPartId() {
         return jobPartId;
+    }
+
+    public void setJobPartId(String jobPartId) {
+        this.jobPartId = jobPartId;
     }
 }

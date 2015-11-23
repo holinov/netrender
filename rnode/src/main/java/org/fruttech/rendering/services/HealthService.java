@@ -9,6 +9,7 @@ import org.fruttech.rendering.data.RNode;
  */
 public interface HealthService extends RunnableService {
     void heartbeat(RNode node);
+
     void putState(String name, Object value);
 
     String getStateJson();

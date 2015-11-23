@@ -44,7 +44,7 @@ public class PropertyLoader {
             return bundle;
         }
 
-        return new Utf8PropertyResourceBundle((PropertyResourceBundle)bundle);
+        return new Utf8PropertyResourceBundle((PropertyResourceBundle) bundle);
     }
 
     private static class Utf8PropertyResourceBundle extends ResourceBundle {

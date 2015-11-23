@@ -1,5 +1,5 @@
 package org.fruttech.rendering.data;
 
-public enum State{
+public enum SceneState {
     Queued, Rendering, Finished
 }

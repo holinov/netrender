@@ -1,22 +1,20 @@
 package org.fruttech.rendering;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.multibindings.Multibinder;
 import com.google.inject.name.Names;
+import org.fruttech.rendering.common.RunnableService;
+import org.fruttech.rendering.services.HazelcastService;
+import org.fruttech.rendering.services.KafkaConsumerService;
+import org.fruttech.rendering.services.KafkaProducerService;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Properties;
 
-public class ApplicationModule  extends AbstractModule {
+public class ApplicationModule extends AbstractModule {
     public static final String CONFIG_PROPERTIES_FILE = "config.properties";
-
-    @Override protected void configure() {
-
-        bind(ApplicationContext.class).toProvider(ApplicationContext::getInstance);
-
-        Properties rawProperties = loadPropertiesFile(CONFIG_PROPERTIES_FILE);
-        Names.bindProperties(binder(),rawProperties);
-    }
+    private Multibinder<RunnableService> serviceBinder;
 
     /**
      * Loads properties from a file
@@ -41,4 +39,26 @@ public class ApplicationModule  extends AbstractModule {
         }
     }
 
+    @Override protected void configure() {
+
+        Properties rawProperties = loadPropertiesFile(CONFIG_PROPERTIES_FILE);
+        Names.bindProperties(binder(), rawProperties);
+
+        bind(ApplicationContext.class).toProvider(ApplicationContext::getInstance);
+
+        bindRunnableService(HazelcastService.class);
+        bindRunnableService(KafkaConsumerService.class);
+        bindRunnableService(KafkaProducerService.class);
+    }
+
+    public void bindRunnableService(Class<? extends RunnableService> service) {
+        getServiceBinder().addBinding().to(service);
+    }
+
+    public Multibinder<RunnableService> getServiceBinder() {
+        if (serviceBinder == null) {
+            serviceBinder = Multibinder.newSetBinder(binder(), RunnableService.class);
+        }
+        return serviceBinder;
+    }
 }
