@@ -1,5 +1,9 @@
 package org.fruttech.rendering.data.jobs;
 
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
 public class RenderingJobPart extends RenderingJob {
     private String bucketInfo;
     private long frame;
@@ -85,6 +89,24 @@ public class RenderingJobPart extends RenderingJob {
         sb.append(", totalBuckets=").append(totalBuckets);
         sb.append('}');
         return sb.toString();
+    }
+
+    @Override public void writeExternal(ObjectOutput out) throws IOException {
+        super.writeExternal(out);
+
+        out.writeUTF(bucketInfo);
+        out.writeLong(frame);
+        out.writeInt(totalBuckets);
+        out.writeUTF(jobPartId);
+    }
+
+    @Override public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        super.readExternal(in);
+
+        bucketInfo = in.readUTF();
+        frame = in.readLong();
+        totalBuckets = in.readInt();
+        jobPartId = in.readUTF();
     }
 
     public String getJobPartId() {

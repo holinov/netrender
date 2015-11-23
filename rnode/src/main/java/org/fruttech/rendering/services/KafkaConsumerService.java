@@ -22,18 +22,37 @@ public class KafkaConsumerService implements RunnableService {
     }
 
     @Override public void run() {
-        jobConsumer = new KafkaConsumer<>(getProperties());
-        jobPartConsumer = new KafkaConsumer<>(getProperties());
-
+        jobConsumer = new KafkaConsumer<>(getJobConsumerProperties());
+        jobPartConsumer = new KafkaConsumer<>(getJobPartConsumerProperties());
     }
 
-    private Properties getProperties() {
+    private Properties getJobConsumerProperties() {
         Properties props = new Properties();
-        props.put("metadata.broker.list", "localhost:9092");
+        props.put("bootstrap.servers", "localhost:9092");
         props.put("group.id", "test");
-        props.put("session.timeout.ms", "1000");
         props.put("enable.auto.commit", "true");
-        props.put("auto.commit.interval.ms", "10000");
+        props.put("auto.commit.interval.ms", "1000");
+        props.put("session.timeout.ms", "30000");
+        props.put("partition.assignment.strategy", "range");
+
+        props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        props.put("value.deserializer", "org.fruttech.rendering.services.RenderingJobSerializer");
+
+        return props;
+    }
+
+    private Properties getJobPartConsumerProperties() {
+        Properties props = new Properties();
+        props.put("bootstrap.servers", "localhost:9092");
+        props.put("group.id", "test");
+        props.put("enable.auto.commit", "true");
+        props.put("auto.commit.interval.ms", "1000");
+        props.put("session.timeout.ms", "30000");
+        props.put("partition.assignment.strategy", "range");
+
+        props.put("key.deserializer", "org.apache.kafka.common.serialization.StringDeserializer");
+        props.put("value.deserializer", "org.fruttech.rendering.services.RenderingJobPartSerializer");
+
         return props;
     }
 
@@ -42,3 +61,4 @@ public class KafkaConsumerService implements RunnableService {
         jobPartConsumer.close();
     }
 }
+

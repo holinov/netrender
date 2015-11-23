@@ -19,8 +19,8 @@ public class KafkaProducerService implements RunnableService {
     private KafkaProducer<String, RenderingJobPart> jobPartProducer;
 
     @Override public void run() {
-        jobProducer = new KafkaProducer<>(getProperties());
-        jobPartProducer = new KafkaProducer<>(getProperties());
+        jobProducer = new KafkaProducer<>(getJobProducerProperties());
+        jobPartProducer = new KafkaProducer<>(getJobPartProducerProperties());
 
     }
 
@@ -36,6 +36,36 @@ public class KafkaProducerService implements RunnableService {
         props.put("session.timeout.ms", "1000");
         props.put("enable.auto.commit", "true");
         props.put("auto.commit.interval.ms", "10000");
+        return props;
+    }
+
+    private Properties getJobProducerProperties() {
+        Properties props = new Properties();
+        props.put("bootstrap.servers", "localhost:9092");
+        props.put("group.id", "test");
+        props.put("enable.auto.commit", "true");
+        props.put("auto.commit.interval.ms", "1000");
+        props.put("session.timeout.ms", "30000");
+        props.put("partition.assignment.strategy", "range");
+
+        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        props.put("value.serializer", "org.fruttech.rendering.services.RenderingJobSerializer");
+
+        return props;
+    }
+
+    private Properties getJobPartProducerProperties() {
+        Properties props = new Properties();
+        props.put("bootstrap.servers", "localhost:9092");
+        props.put("group.id", "test");
+        props.put("enable.auto.commit", "true");
+        props.put("auto.commit.interval.ms", "1000");
+        props.put("session.timeout.ms", "30000");
+        props.put("partition.assignment.strategy", "range");
+
+        props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
+        props.put("value.serializer", "org.fruttech.rendering.services.RenderingJobPartSerializer");
+
         return props;
     }
 

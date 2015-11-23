@@ -17,6 +17,7 @@ import org.fruttech.rendering.data.SceneInfo;
 public class HazelcastService implements RunnableService {
     public static final String RENDER_STATE_MAP = "render.state";
     public static final String RENDER_SCENES_SET = "renderer.scenes";
+    public static final String HZ_INSTANCE_NAME = "Netrender.Hazelcast";
     private HazelcastInstance hazelcastInstance;
 
     public HazelcastService() {}
@@ -35,6 +36,7 @@ public class HazelcastService implements RunnableService {
 
     @Override public void run() {
         final Config hzConfig = new Config();
+        hzConfig.setInstanceName(HZ_INSTANCE_NAME);
 
         final MapConfig renderStatHzMapConfig = new MapConfig(RENDER_STATE_MAP);
         hzConfig.addMapConfig(renderStatHzMapConfig);

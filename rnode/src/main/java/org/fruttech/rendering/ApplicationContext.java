@@ -42,7 +42,7 @@ public class ApplicationContext {
                 service.run();
                 logger.info("=====> Started service : " + serviceName);
             } catch (Exception e) {
-                logger.error("=====> Error starting service : " + serviceName);
+                logger.error("=====> Error starting service : " + serviceName, e);
             }
         }
 

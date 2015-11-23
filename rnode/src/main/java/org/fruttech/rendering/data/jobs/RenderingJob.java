@@ -3,7 +3,12 @@ package org.fruttech.rendering.data.jobs;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-public class RenderingJob {
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
+
+public class RenderingJob implements Externalizable {
     final static Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private String scene;
     private long fromFrame;
@@ -87,5 +92,19 @@ public class RenderingJob {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override public void writeExternal(ObjectOutput out) throws IOException {
+        out.writeUTF(scene);
+        out.writeLong(fromFrame);
+        out.writeLong(toFrame);
+        out.writeUTF(id);
+    }
+
+    @Override public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
+        scene = in.readUTF();
+        fromFrame = in.readLong();
+        toFrame = in.readLong();
+        id = in.readUTF();
     }
 }
