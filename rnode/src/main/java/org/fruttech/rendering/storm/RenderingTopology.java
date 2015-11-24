@@ -8,12 +8,13 @@ import backtype.storm.tuple.Values;
 import com.google.inject.Injector;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.fruttech.rendering.ApplicationContext;
+import org.fruttech.rendering.ApplicationModule;
+import org.fruttech.rendering.KafkaModule;
+import org.fruttech.rendering.PropertiesModule;
 import org.fruttech.rendering.data.jobs.RenderingJob;
 import org.fruttech.rendering.serialization.RenderingJobSerializer;
-import org.fruttech.rendering.services.KafkaProducerService;
 import storm.kafka.*;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -28,14 +29,19 @@ public class RenderingTopology {
 
     public static void main(String[] args) {
 
-        final Injector injector = ApplicationContext.getInstance().getInjector();
+        final Injector injector = ApplicationContext
+                .withModules(
+                        new PropertiesModule(),
+                        new ApplicationModule(),
+                        new KafkaModule()
+                ).getInjector();
+
         final RenderingTopologyConfig topologyConfig = injector.getInstance(RenderingTopologyConfig.class);
 
         final String topicName = RenderingTopologyConstants.RENDER_JOBS_QUEUE_NAME;
-        final BrokerHosts hosts = new ZkHosts("localhost:2181");
+        final BrokerHosts hosts = new ZkHosts(topologyConfig.zkConnect);
 
         TopologyBuilder topologyBuilder = new TopologyBuilder();
-
         //Configure spouts
         topologyBuilder.setSpout(RenderingTopologyConstants.JOB_SPOUT_NAME,
                 new JobSpout(new KafkaSpout(getKafkaSpoutConfig(topicName, hosts)), false),
@@ -56,23 +62,11 @@ public class RenderingTopology {
         Config conf = new Config();
         conf.setDebug(false);
 
+
         LocalCluster cluster = new LocalCluster();
         cluster.submitTopology(RenderingTopologyConstants.TOPOLOGY_NAME, conf, topologyBuilder.createTopology());
 
-        final KafkaProducerService kafkaProducerService = injector.getInstance(KafkaProducerService.class);
-        for (int i = 0; i < 100; i++) {
-            kafkaProducerService.sendJob(new RenderingJob("scene-from-kafka-" + i, 1, 3));
-        }
 
-        //Utils.sleep(10000);
-        try {
-            final int read = System.in.read();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        //cluster.killTopology("test");
-        //cluster.shutdown();
     }
 
     private static SpoutConfig getKafkaSpoutConfig(String topicName, BrokerHosts hosts) {

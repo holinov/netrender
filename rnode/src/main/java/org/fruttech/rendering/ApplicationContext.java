@@ -5,25 +5,39 @@ import org.fruttech.rendering.common.RunnableService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 public class ApplicationContext {
     private static final Logger logger = LoggerFactory.getLogger(ApplicationContext.class);
     private static ApplicationContext instance;
+    private static List<Module> modules;
+    private static boolean started;
+
     private final Injector injector;
 
     private ApplicationContext(Module... modules) {
         injector = Guice.createInjector(modules);
     }
 
+    private ApplicationContext(List<Module> modules) {
+        injector = Guice.createInjector(modules);
+    }
+
     /**
-     * Getter for property 'instance'.
-     *
-     * @return Value for property 'instance'.
+     * Get ApplicationContext instance (if was all ready configured by {@link #withModules(AbstractModule...)}  })
      */
     public synchronized static ApplicationContext getInstance() {
         if (instance == null) {
-            instance = new ApplicationContext(new ApplicationModule());
+            if (modules == null) throw new RuntimeException("Trying to access unconfigured instance is illegal");
+
+            instance = new ApplicationContext(modules);
+        }
+
+        if (!started) {
+            started = true;
             final Injector injector = instance.getInjector();
             final TypeLiteral<Set<RunnableService>> runnableServicesSetType = new TypeLiteral<Set<RunnableService>>() {};
             final Set<RunnableService> runnableServices = injector.getInstance(Key.get(runnableServicesSetType));
@@ -71,9 +85,20 @@ public class ApplicationContext {
     }
 
     /**
-     * Getter for property 'injector'.
+     * Configure ApplicationContext with modules
      *
-     * @return Value for property 'injector'.
+     * @param modules modules to be used in injector
+     */
+    public static ApplicationContext withModules(AbstractModule... modules) {
+        if (instance != null)
+            throw new RuntimeException("Trying to reconfigure all ready existing ApplicationContext is illegal");
+
+        ApplicationContext.modules = new ArrayList<>(Arrays.asList(modules));
+        return getInstance();
+    }
+
+    /**
+     * Get current root injector
      */
     public Injector getInjector() {
         return injector;

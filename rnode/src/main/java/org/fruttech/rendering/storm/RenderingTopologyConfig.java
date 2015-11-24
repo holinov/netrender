@@ -16,4 +16,7 @@ public class RenderingTopologyConfig {
 
     @Inject @Named("rendering.topology.combiners")
     public int combiners;
+
+    @Inject @Named("zookeeper.connect")
+    public String zkConnect;
 }

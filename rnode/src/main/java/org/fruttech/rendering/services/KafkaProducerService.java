@@ -63,7 +63,7 @@ public class KafkaProducerService implements RunnableService {
                     if (exception != null) {
                         logger.error("Error sending rendering job to kafka", exception);
                     } else {
-                        logger.trace(String.format("Sent message to topic: %s partition: %d offset: %d",
+                        logger.debug(String.format("Sent message to topic: %s partition: %d offset: %d",
                                 metadata.topic(), metadata.partition(), metadata.offset()));
                     }
                 });

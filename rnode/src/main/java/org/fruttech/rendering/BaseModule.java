@@ -13,7 +13,7 @@ import java.util.Properties;
  * Holds some convenience methods
  */
 public abstract class BaseModule extends AbstractModule {
-    private Multibinder<RunnableService> serviceBinder;
+    private static Multibinder<RunnableService> serviceBinder;
 
     /**
      * Loads properties from a file
