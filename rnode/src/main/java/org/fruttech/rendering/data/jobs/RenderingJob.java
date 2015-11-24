@@ -2,6 +2,7 @@ package org.fruttech.rendering.data.jobs;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.fruttech.rendering.serialization.SerializationUtils;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -95,16 +96,17 @@ public class RenderingJob implements Externalizable {
     }
 
     @Override public void writeExternal(ObjectOutput out) throws IOException {
-        out.writeUTF(scene);
+        SerializationUtils.writeNullUTF(out, scene);
+        SerializationUtils.writeNullUTF(out, id);
         out.writeLong(fromFrame);
         out.writeLong(toFrame);
-        out.writeUTF(id);
     }
 
     @Override public void readExternal(ObjectInput in) throws IOException, ClassNotFoundException {
-        scene = in.readUTF();
+        scene = SerializationUtils.readNullUTF(in);
+        id = SerializationUtils.readNullUTF(in);
         fromFrame = in.readLong();
         toFrame = in.readLong();
-        id = in.readUTF();
     }
 }
+

@@ -1,4 +1,4 @@
-package org.fruttech.rendering.services;
+package org.fruttech.rendering.serialization;
 
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serializer;

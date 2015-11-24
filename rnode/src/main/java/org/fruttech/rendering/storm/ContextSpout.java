@@ -3,6 +3,7 @@ package org.fruttech.rendering.storm;
 import backtype.storm.spout.SpoutOutputCollector;
 import backtype.storm.task.TopologyContext;
 import backtype.storm.topology.base.BaseRichSpout;
+import org.fruttech.rendering.ApplicationContext;
 
 import java.util.Map;
 
@@ -28,5 +29,6 @@ public abstract class ContextSpout extends BaseRichSpout {
         this.conf = conf;
         this.context = context;
         this.collector = collector;
+        ApplicationContext.getInstance().getInjector().injectMembers(this);
     }
 }

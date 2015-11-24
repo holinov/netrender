@@ -1,7 +1,10 @@
 package org.fruttech.rendering;
 
 import com.google.inject.name.Names;
-import org.fruttech.rendering.services.*;
+import org.fruttech.rendering.services.HazelcastService;
+import org.fruttech.rendering.services.KafkaProducerService;
+import org.fruttech.rendering.services.RenderStateService;
+import org.fruttech.rendering.services.RenderStateServiceImpl;
 
 import java.util.Properties;
 
@@ -17,7 +20,7 @@ public class ApplicationModule extends BaseModule {
         bind(RenderStateService.class).to(RenderStateServiceImpl.class);
 
         bindRunnableService(HazelcastService.class);
-        bindRunnableService(KafkaConsumerService.class);
+        //bindRunnableService(KafkaConsumerService.class);
         bindRunnableService(KafkaProducerService.class);
     }
 

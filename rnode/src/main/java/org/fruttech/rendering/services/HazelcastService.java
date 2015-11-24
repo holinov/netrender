@@ -47,7 +47,5 @@ public class HazelcastService implements RunnableService {
         hazelcastInstance = Hazelcast.getOrCreateHazelcastInstance(hzConfig);
     }
 
-    @Override public void stop() {
-        hazelcastInstance.shutdown();
-    }
+    @Override public void stop() {hazelcastInstance.getLifecycleService().terminate();}
 }

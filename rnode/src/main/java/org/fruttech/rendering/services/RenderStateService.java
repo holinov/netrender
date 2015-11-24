@@ -23,6 +23,11 @@ public interface RenderStateService {
      * Add queued scene info
      */
     void addScene(SceneInfo scene);
+
+    /**
+     * Finish scene and remove info from state cache
+     */
+    void finishScene(SceneInfo scene);
 }
 
 

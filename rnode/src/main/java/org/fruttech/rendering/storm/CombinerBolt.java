@@ -2,7 +2,10 @@ package org.fruttech.rendering.storm;
 
 import backtype.storm.topology.OutputFieldsDeclarer;
 import backtype.storm.tuple.Tuple;
+import com.google.inject.Inject;
+import org.fruttech.rendering.data.SceneInfo;
 import org.fruttech.rendering.data.jobs.RenderingJobPartResult;
+import org.fruttech.rendering.services.RenderStateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,6 +17,8 @@ import java.util.Map;
 public class CombinerBolt extends ContextBolt {
     private static final Logger logger = LoggerFactory.getLogger(CombinerBolt.class);
     private final Map<String, List<RenderingJobPartResult>> results = new HashMap<>();
+
+    @Inject RenderStateService renderStateService;
 
     @Override public void execute(Tuple input) {
         final String key = input.getString(0);
@@ -31,6 +36,8 @@ public class CombinerBolt extends ContextBolt {
         if (renderingJobPart.getTotalBuckets() == resultsForKey.size()) {
             logger.info("All buckets gathered. Start assemble. Key " + key);
             results.remove(key);
+
+            renderStateService.finishScene(new SceneInfo(renderingJobPart.getScene(), null, 0));
         }
     }
 
