@@ -11,6 +11,6 @@ public class RenderingTopologyConstants {
     public static final String KEY_FIELD_NAME = "key";
     public static final String DATA_FIELD_NAME = "data";
 
-    public static final String RENDER_JOBS_QUEUE_NAME = "RenderJobs_TT";
+    public static final String RENDER_JOBS_QUEUE_NAME = "RenderJobs";
     public static final String RENDER_JOB_PARTS_QUEUE_NAME = "RenderJobParts";
 }

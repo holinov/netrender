@@ -7,5 +7,7 @@ import java.io.Externalizable;
  */
 public interface RNode extends Externalizable {
     String nodeId();
+
+    RNodeType nodeType();
 }
 

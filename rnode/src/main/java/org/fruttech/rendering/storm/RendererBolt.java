@@ -14,7 +14,7 @@ public class RendererBolt extends ContextBolt {
 
     @Override public void execute(Tuple input) {
         final String key = input.getString(0);
-        final RenderingJobPart renderingJobPart = RenderingJobPart.fromJson(input.getString(1));
+        final RenderingJobPart renderingJobPart = (RenderingJobPart) input.getValue(1);
         try {
             //logger.info("Processing job part: " + renderingJobPart+" key: "+key);
             Thread.sleep(300);
@@ -22,12 +22,10 @@ public class RendererBolt extends ContextBolt {
             byte[] payload = new byte[1024 * 10];
 
             final RenderingJobPartResult result = new RenderingJobPartResult(renderingJobPart.getScene(),
-                    renderingJobPart.getFromFrame(), renderingJobPart.getToFrame(),
                     renderingJobPart.getBucketInfo(), renderingJobPart.getFrame(),
                     renderingJobPart.getTotalBuckets(), payload);
 
-            //TODO: due to byte array payload change serialization
-            getCollector().emit(new Values(key, RenderingJobPartResult.toJson(result)));
+            getCollector().emit(input, new Values(key, result));
             getCollector().ack(input);
 
         } catch (InterruptedException e) {

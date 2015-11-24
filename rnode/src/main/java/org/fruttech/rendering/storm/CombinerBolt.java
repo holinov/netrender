@@ -22,7 +22,7 @@ public class CombinerBolt extends ContextBolt {
 
     @Override public void execute(Tuple input) {
         final String key = input.getString(0);
-        final RenderingJobPartResult renderingJobPart = RenderingJobPartResult.fromJson(input.getString(1));
+        final RenderingJobPartResult renderingJobPart = (RenderingJobPartResult) input.getValue(1);
 
         if (!results.containsKey(key)) {
             results.put(key, new LinkedList<>());

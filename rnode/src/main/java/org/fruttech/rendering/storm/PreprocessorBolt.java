@@ -14,6 +14,7 @@ public class PreprocessorBolt extends ContextBolt {
 
     public static final int TOTAL_FRAME_BUCKETS = 2;
     @Inject RenderStateService renderStateService;
+    //@Inject RNodeService nodeService;
 
     @Override public void execute(Tuple input) {
         try {
@@ -23,8 +24,8 @@ public class PreprocessorBolt extends ContextBolt {
             for (long i = job.getFromFrame(); i <= job.getToFrame(); i++) {
                 for (int j = 0; j < TOTAL_FRAME_BUCKETS; j++) {
                     final String frameKey = job.getScene() + "-" + i;
-                    final RenderingJobPart renderingJobPart = new RenderingJobPart(job.getScene(), job.getFromFrame(), job.getToFrame(), "bucket-" + j, i, TOTAL_FRAME_BUCKETS);
-                    getCollector().emit(new Values(frameKey, RenderingJobPart.toJson(renderingJobPart)));
+                    final RenderingJobPart renderingJobPart = new RenderingJobPart(job.getScene(), "bucket-" + j, i, TOTAL_FRAME_BUCKETS);
+                    getCollector().emit(input, new Values(frameKey, renderingJobPart));
                     sceneBuckets++;
                 }
             }
@@ -39,7 +40,7 @@ public class PreprocessorBolt extends ContextBolt {
 
     private void registerRenderingJob(RenderingJob job, long buckets) {
         renderStateService.addScene(new SceneInfo(job.getScene(), job, buckets));
-        //renderStateService.setRenderState(null, new RenderState());
+        //renderStateService.setRenderState(nodeService.getCurrentRNode(), new RenderState());
     }
 
     @Override public void declareOutputFields(OutputFieldsDeclarer declarer) {

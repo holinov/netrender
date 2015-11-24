@@ -25,10 +25,12 @@ public class RenderingJob implements Externalizable {
         this.toFrame = toFrame;
     }
 
+    @Deprecated
     public static String toJson(RenderingJob job) {
         return gson.toJson(job);
     }
 
+    @Deprecated
     public static RenderingJob fromJson(String json) {
         return gson.fromJson(json, RenderingJob.class);
     }

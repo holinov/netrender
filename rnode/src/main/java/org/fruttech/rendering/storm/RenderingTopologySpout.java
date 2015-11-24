@@ -10,6 +10,7 @@ import org.fruttech.rendering.data.jobs.RenderingJob;
 
 import java.util.Map;
 
+@Deprecated
 public class RenderingTopologySpout extends BaseRichSpout {
     boolean fired = false;
     private SpoutOutputCollector collector;
